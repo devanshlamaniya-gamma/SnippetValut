@@ -3,7 +3,7 @@ from typing import Annotated
 import re
 
 
-class User(BaseModel):
+class CreateUser(BaseModel):
 
     user_name = Annotated[str , Field(... , description="user name")]
     user_email = Annotated[EmailStr , Field(... , description="user email")]
