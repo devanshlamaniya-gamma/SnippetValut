@@ -1,0 +1,283 @@
+Chalo CodeSnippet (SnippetVault) ka full professional description bana dete hain — including:
+
+JWT Auth
+
+Snippet CRUD
+
+Redis caching
+
+SMTP notifications (login, create, delete, retrieve)
+
+Code email me bhejna
+
+Main yaha code nahi, pura architecture + flow explain karunga.
+
+🚀 Project Name: CodeSnippet Pro API
+🎯 Project Purpose
+
+Ek secure backend API jisme:
+
+User register/login kare
+
+Apne code snippets store kare
+
+Retrieve kare
+
+Delete kare
+
+Har important action pe email notification mile
+
+Snippet retrieve karne pe full code email me mile
+
+🧠 Tech Stack
+
+Backend → FastAPI
+
+ORM → SQLAlchemy
+
+Validation → Pydantic
+
+Database → Supabase (PostgreSQL)
+
+Cache → Redis
+
+Email → SMTP
+
+Auth → JWT
+
+🏗️ Complete System Architecture
+Client (Postman / Frontend)
+        ↓
+FastAPI
+        ↓
+Auth Middleware (JWT Decode)
+        ↓
+Business Logic Layer
+        ↓
+SQLAlchemy (DB)
+        ↓
+Redis (Cache)
+        ↓
+SMTP (Email Notifications)
+
+🗂️ Database Design
+1️⃣ User Table
+Field	Type
+id	UUID
+email	string
+hashed_password	string
+is_verified	bool
+created_at	datetime
+2️⃣ Snippet Table
+Field	Type
+id	UUID
+title	string
+code	text
+language	string
+owner_id	FK(User)
+created_at	datetime
+
+Relation:
+
+User → Many Snippets
+
+🔐 Authentication Flow
+Signup
+
+Hash password
+
+Store in DB
+
+Send verification email
+
+Login
+
+Flow:
+
+Verify password
+
+Generate JWT
+
+Send login alert email
+
+📧 Email Content:
+
+Subject: Login Alert
+
+You have successfully logged in at 10:42 PM.
+If this wasn't you, reset your password.
+
+📌 Snippet Actions + Email Triggers
+1️⃣ Create Snippet
+Endpoint:
+POST /snippets
+
+Flow:
+
+JWT validate
+
+Validate body (Pydantic)
+
+Save snippet in DB
+
+Clear Redis cache (important)
+
+Send Email
+
+📧 Email:
+
+Subject: New Snippet Created
+
+Title: Binary Search
+Language: Python
+Created at: 11:05 PM
+
+2️⃣ Delete Snippet
+Endpoint:
+DELETE /snippets/{id}
+
+Flow:
+
+Check ownership
+
+Delete from DB
+
+Remove from Redis
+
+Send email
+
+📧 Email:
+
+Subject: Snippet Deleted
+
+Title: Binary Search
+Deleted successfully.
+
+3️⃣ Retrieve Snippet (Important Feature)
+Endpoint:
+GET /snippets/{id}
+
+Flow:
+
+Check Redis:
+
+snippet:<id>
+
+
+If cache miss → fetch from DB
+
+Store in Redis (TTL 300s)
+
+Send snippet code via email
+
+📧 Email:
+
+Subject: Your Requested Snippet
+
+Title: Binary Search
+Language: Python
+
+Code:
+---------------------
+def binary_search(arr, target):
+    ...
+---------------------
+
+
+👉 Ye feature tumhara project unique bana dega 🔥
+
+⚡ Redis Strategy
+Cache Keys
+Single Snippet:
+snippet:<snippet_id>
+
+User Snippet List:
+user:<user_id>:snippets
+
+When to Invalidate Cache?
+
+Create snippet → delete user list cache
+
+Delete snippet → delete snippet cache
+
+Update snippet → delete snippet cache
+
+📧 SMTP Email System Design
+
+Use:
+
+BackgroundTasks (non-blocking)
+
+HTML email template
+
+Central email service function
+
+Example structure:
+
+services/
+    email_service.py
+
+
+Function:
+
+send_email(to, subject, body)
+
+
+Important:
+
+Use environment variables
+
+Use app password
+
+Never hardcode credentials
+
+🧩 Folder Structure (Clean Architecture)
+app/
+ ├── main.py
+ ├── db.py
+ ├── models/
+ │    ├── user.py
+ │    ├── snippet.py
+ ├── schemas/
+ │    ├── user.py
+ │    ├── snippet.py
+ ├── routes/
+ │    ├── auth.py
+ │    ├── snippet.py
+ ├── core/
+ │    ├── security.py
+ │    ├── config.py
+ ├── services/
+ │    ├── redis_service.py
+ │    ├── email_service.py
+
+🔄 Full Example Flow
+User Login
+
+Validate credentials
+
+Create token
+
+Trigger email
+
+Return token
+
+User Retrieves Snippet
+
+Check Redis
+
+Fetch from DB if needed
+
+Cache result
+
+Send full code in email
+
+Return JSON response
+
+🔥 Interview Explanation
+
+Tum confidently bol sakte ho:
+
+I built a secure code snippet management API using FastAPI with JWT authentication. I integrated Redis for caching and SMTP-based email notifications for login alerts and snippet activity tracking. When a snippet is retrieved, the full code is automatically emailed to the user.
+
+Ye bahut professional lagta hai.
