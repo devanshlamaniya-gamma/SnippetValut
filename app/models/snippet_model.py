@@ -14,4 +14,4 @@ class Snippet(Base):
     created_at = Column(TIMESTAMP)
 
 
-    user = relationship("User", back_populates="snippet_model")
+    user = relationship("User", back_populates="snippets") 

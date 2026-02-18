@@ -1,7 +1,7 @@
 import bcrypt
 
 
-def password_hasing(password):
+def create_hashed_password(password):
 
     # password_bytes = password.encode("utf-8")
 
@@ -16,7 +16,7 @@ def password_hasing(password):
 
 # print(password_hasing("devansh123"))
 
-def check_pass(entered,hashed_password):
+def check_hashed_password(entered:str,hashed_password:str):
 
     entered = entered.encode("utf-8")
     hashed_password = hashed_password.encode("utf-8")

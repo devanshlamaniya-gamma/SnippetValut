@@ -22,13 +22,3 @@ def get_db():
 
     finally:
         db.close()
-
-from sqlalchemy import text
-
-if __name__ == "__main__":
-    try:
-        with engine.connect() as connection:
-            result = connection.execute(text("select 1"))
-            print("connection successful")
-    except Exception as e:
-        print("test connection failed " , e)

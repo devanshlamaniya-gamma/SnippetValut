@@ -20,9 +20,9 @@ def create_jwt_token(data : dict):
 
     expire = datetime.now(timezone.utc) + timedelta(minutes=EXPIRATION_TIME_MINS)
 
-    data_to_encode.update({"exp" : str(expire)})
+    data_to_encode.update({"exp" : expire})
 
-    jwt_token = jwt.encode(data_to_encode , SECRET_KEY , algorithm=[ALGORITHM])
+    jwt_token = jwt.encode(data_to_encode , SECRET_KEY , ALGORITHM)
 
     return jwt_token
 
@@ -31,7 +31,7 @@ def create_jwt_token(data : dict):
 def check_jwt_token(token:str):
 
     try :
-        payload = jwt.decode(token , SECRET_KEY , algorithm=[ALGORITHM])
+        payload = jwt.decode(token , SECRET_KEY ,ALGORITHM)
         
         return payload
 
@@ -41,4 +41,4 @@ def check_jwt_token(token:str):
     except jwt.InvalidTokenError:
         return ("the token is invalid")
     
-print(check_jwt_token("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiZGV2YW5zaCIsInBhc3N3b3JkIjoiZGV2YW5zaDEyMyIsImV4cGlyZSI6IjIwMjYtMDItMTcgMTI6NTk6NTUuNzU0NzM2In0.HfAuN5Uf0zx0HdoJLZVZyXeB_YDAFiUx0t-BGb12cBY"))
+# print(check_jwt_token("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiZGV2YW5zaCIsInBhc3N3b3JkIjoiZGV2YW5zaDEyMyIsImV4cGlyZSI6IjIwMjYtMDItMTcgMTI6NTk6NTUuNzU0NzM2In0.HfAuN5Uf0zx0HdoJLZVZyXeB_YDAFiUx0t-BGb12cBY"))
