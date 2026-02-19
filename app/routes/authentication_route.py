@@ -13,13 +13,14 @@ from app.schema.user_login_schema import UserLogin
 
 from app.authentication.password_hashing import create_hashed_password , check_hashed_password
 
-auth = APIRouter(prefix="/router")
+auth = APIRouter(prefix="/router" , tags= ["Authentication"])
 
 @auth.post("/create")
 def create_user(user : CreateUser , db : Session = Depends(get_db)):
 
     print("coming...")
     existing_user = db.query(User).filter(user.user_email == User.email).first()
+
 
     if existing_user:
         print("existing")
@@ -54,19 +55,20 @@ def create_user(user : CreateUser , db : Session = Depends(get_db)):
         # "token" : jwt_token
     }
 
+
 @auth.post("/login")
 def login_user( db : Session = Depends(get_db) , form_data :OAuth2PasswordRequestForm = Depends() ):
 
     print("checking h ki ni")
-    existing_user = db.query(User).filter(form_data.username == User.name4).first()
+    existing_user = db.query(User).filter(form_data.username == User.name).first()
     print("checked")
     print(existing_user)
 
     if not existing_user:
-        print("ni mila")
-        raise HTTPException(status.HTTP_404_NOT_FOUND , "user ni mila")
+        print("not found...")
+        raise HTTPException(status.HTTP_404_NOT_FOUND , "user not found")
     
-    print("mil gya")
+    print("found")
     jwt_token = create_jwt_token ({
         "id" : existing_user.id,
         "name" : existing_user.name,
@@ -74,8 +76,8 @@ def login_user( db : Session = Depends(get_db) , form_data :OAuth2PasswordReques
     })
 
     return{
-        "token" : jwt_token,
-        "type" : "Bearer"
+        "access_token" : jwt_token,
+        "token_type" : "bearer"
     }
     
 
@@ -96,4 +98,4 @@ def get_user_by_id(entered_id : int , db : Session=Depends(get_db)):
         "name" : user.name,
         "email" : user.email,
         "created_at" : user.created_at
-    }
+    }   

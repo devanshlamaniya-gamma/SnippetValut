@@ -9,9 +9,10 @@ class Snippet(Base):
 
     id = Column(Integer , primary_key=True)
     title = Column(String  , nullable=False)
-    code = Column(Text , nullable=False)
+    code = Column(Text )
+    language = Column(String , nullable = False)
     owner_id = Column(ForeignKey("users.id") , nullable=False)
     created_at = Column(TIMESTAMP)
 
 
-    user = relationship("User", back_populates="snippets") 
+    user = relationship("User", back_populates="snippets")  
