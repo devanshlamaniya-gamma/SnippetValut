@@ -1,4 +1,4 @@
-# this is main file 
+
 from fastapi import FastAPI
 from app.databse.db import Base ,engine
 from app.models.user_model import User

@@ -8,6 +8,7 @@ from app.databse.db import get_db
 from fastapi.security import OAuth2PasswordRequestForm
 import bcrypt
 
+from app.utilities.email_utility import send_mail
 
 from app.schema.user_login_schema import UserLogin
 
@@ -34,6 +35,13 @@ def create_user(user : CreateUser , db : Session = Depends(get_db)):
         email = user.user_email,
         password = hashed_password
     )
+
+    to = new_user.email
+    subject  = "account created successfully"
+    body = f"the account is created succesfully with credentials : \n name : {new_user.name} , email : {new_user.email} "
+
+
+    send_mail(to, subject , body)
  
     db.add(new_user)
     db.commit()
@@ -68,6 +76,13 @@ def login_user( db : Session = Depends(get_db) , form_data :OAuth2PasswordReques
         print("not found...")
         raise HTTPException(status.HTTP_404_NOT_FOUND , "user not found")
     
+    to = existing_user.email
+    subject  = "new login!!!"
+    body = f"new login from your account : \n name : {existing_user.name} , email : {existing_user.email} "
+
+
+    send_mail(to, subject , body)
+    
     print("found")
     jwt_token = create_jwt_token ({
         "id" : existing_user.id,
@@ -90,6 +105,7 @@ def get_all_users(db : Session = Depends(get_db) , token : str = Depends(oauth))
 def get_user_by_id(entered_id : int , db : Session=Depends(get_db)):
 
     user =  db.query(User).filter(User.id == entered_id).first()
+    
 
     # return user
 
