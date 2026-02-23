@@ -1,7 +1,7 @@
 alembic init alembic -------to inittialize
 now make changes in the Table
 alembic revision --autogenerate -m "msg"
-alembic upgrade head  
+alembic upgrade head
 
 
 

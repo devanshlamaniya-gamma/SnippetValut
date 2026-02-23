@@ -1,48 +1,49 @@
-from fastapi import status , HTTPException , Depends , APIRouter  # the apirouter works as traffic controller that handles the incoming web request and sent to the handler
+import bcrypt
+from fastapi import (  # the apirouter works as traffic controller that handles the incoming web request and sent to the handler
+    APIRouter,
+    Depends,
+    HTTPException,
+    status,
+)
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
-from app.authentication.jwt_creation import check_jwt_token , create_jwt_token , oauth
-from app.schema.user_schema import CreateUser
-from app.models.user_model import User
+from app.authentication.jwt_creation import check_jwt_token, create_jwt_token, oauth
+from app.authentication.password_hashing import (
+    check_hashed_password,
+    create_hashed_password,
+)
 from app.databse.db import get_db
-from fastapi.security import OAuth2PasswordRequestForm
-import bcrypt
-
+from app.models.user_model import User
+from app.schema.user_login_schema import UserLogin
+from app.schema.user_schema import CreateUser
 from app.utilities.email_utility import send_mail
 
-from app.schema.user_login_schema import UserLogin
+auth = APIRouter(prefix="/router", tags=["Authentication"])
 
-from app.authentication.password_hashing import create_hashed_password , check_hashed_password
 
-auth = APIRouter(prefix="/router" , tags= ["Authentication"])
-
-@auth.post("/create")
-def create_user(user : CreateUser , db : Session = Depends(get_db)):
+@auth.post("/create", status_code=201)
+def create_user(user: CreateUser, db: Session = Depends(get_db)):
 
     print("coming...")
     existing_user = db.query(User).filter(user.user_email == User.email).first()
 
-
     if existing_user:
         print("existing")
         raise HTTPException(status.HTTP_401_UNAUTHORIZED)
-    
+
     hashed_password = create_hashed_password(str(user.password))
 
     new_user = User(
-    
-        name = user.user_name,
-        email = user.user_email,
-        password = hashed_password
+        name=user.user_name, email=user.user_email, password=hashed_password
     )
 
     to = new_user.email
-    subject  = "account created successfully"
+    subject = "account created successfully"
     body = f"the account is created succesfully with credentials : \n name : {new_user.name} , email : {new_user.email} "
 
+    send_mail(to, subject, body)
 
-    send_mail(to, subject , body)
- 
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
@@ -56,16 +57,18 @@ def create_user(user : CreateUser , db : Session = Depends(get_db)):
     # )
 
     return {
-        "status" : "created",
-        "id" : new_user.id,
-        "name" : new_user.name,
-        "email" : new_user.email,
+        "status": "created",
+        "id": new_user.id,
+        "name": new_user.name,
+        "email": new_user.email,
         # "token" : jwt_token
     }
 
 
 @auth.post("/login")
-def login_user( db : Session = Depends(get_db) , form_data :OAuth2PasswordRequestForm = Depends() ):
+def login_user(
+    db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()
+):
 
     print("checking h ki ni")
     existing_user = db.query(User).filter(form_data.username == User.name).first()
@@ -74,44 +77,44 @@ def login_user( db : Session = Depends(get_db) , form_data :OAuth2PasswordReques
 
     if not existing_user:
         print("not found...")
-        raise HTTPException(status.HTTP_404_NOT_FOUND , "user not found")
-    
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "user not found")
+
     to = existing_user.email
-    subject  = "new login!!!"
+    subject = "new login!!!"
     body = f"new login from your account : \n name : {existing_user.name} , email : {existing_user.email} "
 
+    send_mail(to, subject, body)
 
-    send_mail(to, subject , body)
-    
     print("found")
-    jwt_token = create_jwt_token ({
-        "id" : existing_user.id,
-        "name" : existing_user.name,
-        "email" : existing_user.email
-    })
+    jwt_token = create_jwt_token(
+        {
+            "id": existing_user.id,
+            "name": existing_user.name,
+            "email": existing_user.email,
+        }
+    )
 
-    return{
-        "access_token" : jwt_token,
-        "token_type" : "bearer"
-    }
-    
+    return {"access_token": jwt_token, "token_type": "bearer"}
+
 
 @auth.get("/users")
-def get_all_users(db : Session = Depends(get_db) , token : str = Depends(oauth)):
+def get_all_users(db: Session = Depends(get_db), token: str = Depends(oauth)):
 
     return db.query(User).all()
 
-@auth.get("/user-id:{id}")
-def get_user_by_id(entered_id : int , db : Session=Depends(get_db)):
 
-    user =  db.query(User).filter(User.id == entered_id).first()
-    
+@auth.get("/user-id:{id}")
+def get_user_by_id(
+    entered_id: int, db: Session = Depends(get_db), token: str = Depends(oauth)
+):
+
+    user = db.query(User).filter(User.id == entered_id).first()
 
     # return user
 
     return {
-        "id" : user.id,
-        "name" : user.name,
-        "email" : user.email,
-        "created_at" : user.created_at
-    }   
+        "id": user.id,
+        "name": user.name,
+        "email": user.email,
+        "created_at": user.created_at,
+    }
