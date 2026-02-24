@@ -1,18 +1,13 @@
 import bcrypt
 from fastapi import (  # the apirouter works as traffic controller that handles the incoming web request and sent to the handler
-    APIRouter,
-    Depends,
-    HTTPException,
-    status,
-)
+    APIRouter, Depends, HTTPException, status)
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
-from app.authentication.jwt_creation import check_jwt_token, create_jwt_token, oauth
-from app.authentication.password_hashing import (
-    check_hashed_password,
-    create_hashed_password,
-)
+from app.authentication.jwt_creation import (check_jwt_token, create_jwt_token,
+                                             oauth)
+from app.authentication.password_hashing import (check_hashed_password,
+                                                 create_hashed_password)
 from app.databse.db import get_db
 from app.models.user_model import User
 from app.schema.user_login_schema import UserLogin
@@ -22,7 +17,7 @@ from app.utilities.email_utility import send_mail
 auth = APIRouter(prefix="/router", tags=["Authentication"])
 
 
-@auth.post("/create", status_code=201)
+@auth.post("/create")
 def create_user(user: CreateUser, db: Session = Depends(get_db)):
 
     print("coming...")
@@ -55,7 +50,13 @@ def create_user(user: CreateUser, db: Session = Depends(get_db)):
     #         "email" : new_user.email
     #     }
     # )
-
+    print({
+        "status": "created",
+        "id": new_user.id,
+        "name": new_user.name,
+        "email": new_user.email,
+        # "token" : jwt_token
+    })
     return {
         "status": "created",
         "id": new_user.id,

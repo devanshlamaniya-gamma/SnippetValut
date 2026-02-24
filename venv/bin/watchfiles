@@ -1,4 +1,4 @@
-#!/home/lap-55/vs/SnippetVault/venv/bin/python3
+#!/home/lap-55/vs/CodeSnippet/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

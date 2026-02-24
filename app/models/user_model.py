@@ -19,3 +19,4 @@ class User(Base):
     created_at = Column(TIMESTAMP, nullable=True, default=datetime.now)
 
     snippets = relationship("Snippet", back_populates="user")
+

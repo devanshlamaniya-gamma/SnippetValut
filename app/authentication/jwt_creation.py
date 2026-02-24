@@ -37,7 +37,7 @@ def check_jwt_token(token: str):
 
     print("this is the token", token)
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, SECRET_KEY, ALGORITHM)
         print(type(payload))
 
         return payload

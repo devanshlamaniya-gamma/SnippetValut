@@ -1,6 +1,3 @@
-import pytest
-from fastapi.testclient import TestClient
-
 # def test_login_user(client , test_user_data):
 
 #     response = client.post(
@@ -12,23 +9,34 @@ from fastapi.testclient import TestClient
 #     assert "access_token" in response.json()
 
 
-def test_login_user(client, registered_user):
+# def test_login_user(client, test_user_logindata):
 
+#     response = client.post(
+#         "/router/login",
+#         data=test_user_logindata,
+#     )
+
+#     assert response.status_code == 200
+#     assert "access_token" in response
+
+def test_login_user(client, test_user_logindata,registered_user):
+    # registered_user
     response = client.post(
         "/router/login",
         data={
-            "username": registered_user["user_email"],
-            "password": registered_user["password"],
+            "username": test_user_logindata["user_name"],
+            "password": test_user_logindata["password"]
         },
     )
 
     assert response.status_code == 200
 
-
 def test_get_all_users(client, auth_token):
 
     response = client.get(
-        "/router/users", json=test_login_user(client, test_user_data=test_login_user)
+        "/router/users",
+        headers={"Authorization": f"Bearer {auth_token}"}
     )
+
     assert response.status_code == 200
-    return response.json()
+

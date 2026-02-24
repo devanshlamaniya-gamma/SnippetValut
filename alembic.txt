@@ -10,3 +10,6 @@ alembic upgrade head
 
 
 how alembic works whats the internal process
+A migration tool is specialized software that automates the transfer of data, applications, or entire systems from a source (e.g., on-premises server) to a target  
+
+Alembic is a lightweight database migration tool designed for SQLAlchemy in Python, functioning as a version control system (like Git) for database schemas. It allows developers to define, track, and apply schema changes (tables, columns, constraints) in a structured manner, supporting both upgrading to new versions and rolling back to previous ones. 

@@ -1,4 +1,5 @@
-from sqlalchemy import TIMESTAMP, Column, ForeignKey, Index, Integer, String, Text
+from sqlalchemy import (TIMESTAMP, Column, ForeignKey, Index, Integer, String,
+                        Text)
 from sqlalchemy.orm import relationship
 
 from app.databse.db import Base
