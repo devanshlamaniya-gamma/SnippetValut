@@ -1,6 +1,8 @@
 import json
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi_limiter.depends import RateLimiter
+from pyrate_limiter import Duration, Limiter, Rate
 from sqlalchemy.orm import Session
 
 from app.authentication.dependency import get_current_user
@@ -42,10 +44,10 @@ def add_snippet(
     return {"message": f"snippet successfully created in {new_snippet.owner_id}"}
 
 
-@snippet.get("/get_all")
-def get_all_snippets(
-    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
-):
+@snippet.get(
+    "/get_all", dependencies=[Depends(RateLimiter(limiter=Limiter(Rate(2, Duration.SECOND * 5))))]
+)
+def get_all_snippets(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
 
     cache_data = redis_client.get("get_all_snippets")
     if cache_data:
@@ -75,7 +77,10 @@ def get_all_snippets(
     return snippets
 
 
-@snippet.get("/snippet_id:{id}")
+@snippet.get(
+    "/snippet_id:{id}",
+    dependencies=[Depends(RateLimiter(limiter=Limiter(Rate(2, Duration.SECOND * 5))))],
+)
 def get_snippet_by_id(
     id: int,
     db: Session = Depends(get_db),

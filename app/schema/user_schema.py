@@ -6,7 +6,7 @@ from pydantic import BaseModel, EmailStr, Field, field_validator
 
 class CreateUser(BaseModel):
 
-    user_name: Annotated[str, Field(..., description="user_name" , examples=["User name"])]
+    user_name: Annotated[str, Field(..., description="user_name", examples=["User name"])]
     user_email: Annotated[EmailStr, Field(..., examples=["user@gmail.com"])]
     password: Annotated[str, Field(..., min_length=8, description="User@123")]
 
@@ -24,10 +24,12 @@ class CreateUser(BaseModel):
         if not re.search(r'[!@#$%^&*(),.?":{}|<>-]', password):
             raise ValueError("password must contain at least 1 special character")
 
+        return password
+
     @field_validator("user_email")
-    def email_only(user_email : str):
+    def email_only(user_email: str):
 
         if not user_email.lower().endswith("@gmail.com"):
             raise ValueError("only gamil address are allowed")
-        
-        return user_email   
+
+        return user_email

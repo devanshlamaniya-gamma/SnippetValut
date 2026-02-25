@@ -1,0 +1,7 @@
+.env
+.gitignore
+venv
+a.txt
+aa.txt
+alembic.txt
+trial.py

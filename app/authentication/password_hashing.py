@@ -3,6 +3,10 @@ import bcrypt
 
 def create_hashed_password(password):
 
+    if password is None:
+
+        raise ValueError("Password cannot be None")
+
     # password_bytes = password.encode("utf-8")
 
     # salt = bcrypt.gensalt()
@@ -14,7 +18,7 @@ def create_hashed_password(password):
     return hashed_pass.decode("utf-8")
 
 
-# print(password_hasing("devansh123"))
+# print(create_hashed_password(str("devansh123")))
 
 
 def check_hashed_password(entered: str, hashed_password: str):
@@ -32,4 +36,10 @@ def check_hashed_password(entered: str, hashed_password: str):
     return a
 
 
-# print(check_pass("devansh123" , "$2b$12$v8TAGRlwzXTCAoU5M6dZf.WQbhoiRWBNPToMMPF8b0JtG/8/t/DCO"))
+print(
+    check_hashed_password(
+        "Xyz@1234", "$2b$12$0DsUsktJQxNIja0Uj1Wf0eslxhe1iZSF8sMLM0Wpj3V8i5bXFT2ei"
+    )
+)
+# $2b$12$egsrvT7yYr8m7Mrze7GmzObWL8VXeVpuc6z5LR6BsBKOfSrUPCifq
+# Ritul@123
