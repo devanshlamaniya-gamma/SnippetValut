@@ -20,7 +20,7 @@ jobs:
     - name: Deploy to EC2
       run: |
         ssh -o StrictHostKeyChecking=no \
-            -i ~/devansh_github.pem \
+            -i ~/codesnippet.pem \
             ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
               cd /home/ubuntu/SnippetValut
               git pull origin main
