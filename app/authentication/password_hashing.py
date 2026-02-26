@@ -10,7 +10,7 @@ def create_hashed_password(password):
     # password_bytes = password.encode("utf-8")
 
     # salt = bcrypt.gensalt()
-
+    # kjnfkjenf
     # hashed_pass = bcrypt.hashpw(password_bytes , salt)
 
     hashed_pass = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
