@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: ${{ secrets.DARABASE_URL }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
       REDIS_URL: ${{ secrets.REDIS_URL }}
       SENDERS_EMAIL: ${{secrets.SENDERS_EMAIL}}
       EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
