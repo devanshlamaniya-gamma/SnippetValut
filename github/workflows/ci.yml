@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: main
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      UPSTASH_REDIS_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+      UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+
+    steps:
+    - name: check the code
+      uses: actions/checkout@v4
+
+    - name: set up og python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.12
+
+    - name: installing all dependencies
+      run: |
+        pip install -r requirements.txt
+
+
+
+    - name: running tests
+      run: |
+        pip install pytest
+        pytest

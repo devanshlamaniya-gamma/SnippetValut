@@ -1,5 +1,6 @@
-import redis
 import os
+
+import redis
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -16,10 +17,10 @@ print(REDIS_URL)
 
 # redis_client = redis.Redis(url=REDIS_URL, token= REDIS_SECRET_TOKEN , host=6379 , decode_responses=True)
 
-redis_client = redis.Redis.from_url(REDIS_URL , decode_responses = True )
+redis_client = redis.Redis.from_url(REDIS_URL, decode_responses=True)
 
-# # Test write
-# redis_client.set("test_key", "hello")
 
-# # Test read
-# print(redis_client.get("test_key"))
+# redis_client.set("test", "hello")
+
+
+# print(redis_client.get("test"))

@@ -127,7 +127,7 @@ def get_all_users(db: Session = Depends(get_db), token: str = Depends(oauth)):
 
 
 @auth.get(
-    "/user-id:{id}",
+    "/user-id:{entered_id}",
     dependencies=[Depends(RateLimiter(limiter=Limiter(Rate(2, Duration.SECOND * 5))))],
 )
 def get_user_by_id(entered_id: int, db: Session = Depends(get_db), token: str = Depends(oauth)):
