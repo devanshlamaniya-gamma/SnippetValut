@@ -9,10 +9,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-      UPSTASH_REDIS_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
-      UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+      DATABASE_URL: ${{ secrets.DARABASE_URL }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
+      SENDERS_EMAIL: ${{secrets.SENDERS_EMAIL}}
+      EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+
 
     steps:
     - name: check the code
@@ -21,7 +23,7 @@ jobs:
     - name: set up og python
       uses: actions/setup-python@v5
       with:
-        python-version: 3.12
+        python-version: "3.12"
 
     - name: installing all dependencies
       run: |
