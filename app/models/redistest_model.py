@@ -10,5 +10,5 @@ class Test(Base):
     id = Column(Integer, primary_key=True)
     name = Column(Integer, primary_key=True)
 
-    # add to use and test alembic
+    #  testing alembic
     age = Column(Integer, nullable=False)
