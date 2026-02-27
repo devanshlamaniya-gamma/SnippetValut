@@ -4,8 +4,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
-from app.authentication.jwt_creation import (check_jwt_token, create_jwt_token,
-                                             oauth)
+from app.authentication.jwt_creation import check_jwt_token, create_jwt_token, oauth
 from app.databse.db import Base, get_db
 from app.models.user_model import User
 
@@ -45,7 +44,7 @@ def get_current_user(token: str = Depends(oauth), db: Session = Depends(get_db))
 
     user_id = payload.get("id")
     if not user_id:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "User ID missing in token")
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "User ID missing in   token")
 
     user = db.query(User).filter(User.id == user_id).first()
     if not user:

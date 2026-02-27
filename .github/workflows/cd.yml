@@ -12,13 +12,21 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    -   name: Setting up access
+        run: |
+           echo "${{ secrets.EC2_KEY }}" > ~/codesnippet.pem
+           chmod 400 ~/codesnippet.pem
 
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
+    -   name: login to ec2
+        run: |
+          ssh -o StrictHostKeyChecking=no \
+            -i ~/codesnippet.pem \
+            ubuntu@${{ secrets.EC2_HOST }}
 
-      - name: Deploy to Railway
-        run: railway up --service your-service-name
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+    -   name: deploying in ec2
+        run: |
+              cd /home/ubuntu/SnippetValut
+              git pull origin main
+              sudo docker compose down
+              sudo docker compose build
+              sudo docker compose up -d

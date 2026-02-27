@@ -24,3 +24,6 @@ print("table created")
 @app.get("/")
 def root():
     return "this is root"
+
+
+# rnd_P8SH3PcS7XmU00ThMVQn7xbVcDYj

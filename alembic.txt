@@ -46,3 +46,19 @@ pytest coverage check command
               sudo docker compose build
               sudo docker compose up -d
         EOF
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      - name: Deploy to Railway
+        run: railway up --service your-service-name
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
