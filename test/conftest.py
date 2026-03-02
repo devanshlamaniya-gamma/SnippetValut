@@ -8,7 +8,7 @@ from app.main import app
 # from main import app
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture()
 def client():
     with TestClient(app) as c:
         yield c

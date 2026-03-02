@@ -1,4 +1,4 @@
-from fastapi import (  # the apirouter works as traffic controller that handles the incoming web request and sent to the handler
+from fastapi import (
     APIRouter,
     Depends,
     HTTPException,
@@ -68,7 +68,6 @@ def create_user(user: CreateUser, db: Session = Depends(get_db)):
         "id": new_user.id,
         "name": new_user.name,
         "email": new_user.email,
-        # "token" : jwt_token
     }
 
 

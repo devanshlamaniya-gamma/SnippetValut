@@ -36,10 +36,10 @@ def check_hashed_password(entered: str, hashed_password: str):
     return a
 
 
-print(
-    check_hashed_password(
-        "Xyz@1234", "$2b$12$0DsUsktJQxNIja0Uj1Wf0eslxhe1iZSF8sMLM0Wpj3V8i5bXFT2ei"
-    )
-)
+# print(
+#     check_hashed_password(
+#         "Xyz@1234", "$2b$12$0DsUsktJQxNIja0Uj1Wf0eslxhe1iZSF8sMLM0Wpj3V8i5bXFT2ei"
+#     )
+# )
 # $2b$12$egsrvT7yYr8m7Mrze7GmzObWL8VXeVpuc6z5LR6BsBKOfSrUPCifq
 # Ritul@123

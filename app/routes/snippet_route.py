@@ -41,7 +41,9 @@ def add_snippet(
 
     redis_client.delete("get_all_snippets")
 
-    return {"message": f"snippet successfully created in {new_snippet.owner_id}"}
+    return {
+        "message": f"snippet with snippet id {new_snippet.id} successfully created by {new_snippet.owner_id}"
+    }
 
 
 @snippet.get(

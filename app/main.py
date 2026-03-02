@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from time import time
+
+from fastapi import FastAPI, Response
 
 from app.databse.db import Base, engine
 from app.models.redistest_model import Test
@@ -15,9 +17,7 @@ app.include_router(auth)
 app.include_router(snippet)
 
 print("app started now creating table")
-Base.metadata.create_all(
-    bind=engine
-)  # ye kehta h ki base k andar jis jis bi table ka metadata h wo wo table bna do agr pehle se ni h toh
+Base.metadata.create_all(bind=engine)
 print("table created")
 
 

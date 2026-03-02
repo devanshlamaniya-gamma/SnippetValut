@@ -1,7 +1,7 @@
 # l = [x for x in range(10)]
 # print(l)
 
-# a = [1,2] 
+# a = [1,2]
 # b = [3,4]
 
 # nl = [n for n in a for y in a]
@@ -50,7 +50,7 @@
 #         print("ending")
 
 #         return result
-    
+
 # @decorator
 # def say_hello(name):
 #     print(f"hello {name}")
@@ -73,7 +73,7 @@
 # @deco
 # def say():
 #     print("helllo bhaiu")
-    
+
 
 # say()
 
@@ -82,7 +82,7 @@
 
 
 # def decorator(func):
-#     @wraps(func)    
+#     @wraps(func)
 #     def wrapper(*args ,  **kwargs):
 
 #         start = time.time()
@@ -103,7 +103,12 @@
 
 # print(say_hello())
 
+from datetime import datetime
+from time import time
+
 import jwt
+from fastapi import FastAPI, Response
+
 # from datetime import timedelta , datetime
 
 # secret_key = "Devansh123"
@@ -138,7 +143,6 @@ import jwt
 # ))
 
 
-
 # import bcrypt
 
 # encrypted = bcrypt.hashpw("devansh".encode("UTF-8"), salt=bcrypt.gensalt())
@@ -151,3 +155,17 @@ import jwt
 # coverage run -m pytest
 # coverage report -m
 
+
+app = FastAPI()
+
+
+@app.middleware("http")
+def adding_middle(response: Response, call_next):
+
+    start = time()
+
+    call_next(response)
+
+    end = time()
+
+    return end - start
